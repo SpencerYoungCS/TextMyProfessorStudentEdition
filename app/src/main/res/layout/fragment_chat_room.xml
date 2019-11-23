@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ChatRoomFragment">
+
+        <ImageButton
+            android:id="@+id/sendBtn"
+            android:layout_width="71dp"
+            android:layout_height="75dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_send"
+            app:layout_constraintBottom_toBottomOf="@+id/inputMsgText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toEndOf="@+id/inputMsgText"
+            app:layout_constraintTop_toTopOf="@+id/inputMsgText" />
+
+        <EditText
+            android:id="@+id/inputMsgText"
+            android:layout_width="328dp"
+            android:layout_height="47dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Can you explain?"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chatBox"
+            tools:ignore="HardcodedText" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatBox"
+            android:layout_width="384dp"
+            android:layout_height="533dp"
+            android:layout_margin="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

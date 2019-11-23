@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/titleFragment">
+
+    <fragment
+        android:id="@+id/titleFragment"
+        android:name="com.example.textmyprofessorstudent.TitleFragment"
+        android:label="TitleFragment"
+        tools:layout="@layout/fragment_title"
+        >
+        <action
+            android:id="@+id/action_titleFragment_to_joinRoomFragment"
+            app:destination="@id/joinRoomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatRoomFragment"
+        android:name="com.example.textmyprofessorstudent.ChatRoomFragment"
+        android:label="chatRoomFragment"
+        tools:layout="@layout/fragment_chat_room">
+        <argument
+            android:name="roomid"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/joinRoomFragment"
+        android:name="com.example.textmyprofessorstudent.JoinRoomFragment"
+        android:label="JoinRoomFragment"
+        tools:layout="@layout/fragment_join_room">
+        <action
+            android:id="@+id/action_joinRoomFragment_to_chatRoomFragment"
+            app:destination="@id/chatRoomFragment" />
+    </fragment>
+</navigation>
