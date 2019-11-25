@@ -14,6 +14,7 @@ import com.example.textmyprofessorstudent.databinding.FragmentChatRoomBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.fragment_chat_room.view.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
