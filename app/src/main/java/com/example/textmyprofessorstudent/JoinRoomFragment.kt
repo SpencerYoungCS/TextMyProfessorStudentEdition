@@ -1,24 +1,18 @@
 package com.example.textmyprofessorstudent
 
-import android.content.Context
-import android.net.Uri
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.textmyprofessorstudent.databinding.FragmentJoinRoomBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.fragment_join_room.*
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.google.firebase.database.*
 
 class JoinRoomFragment : Fragment() {
 
@@ -39,13 +33,51 @@ class JoinRoomFragment : Fragment() {
         auth.signInAnonymously()
 
         binding.joinRoomBtn.setOnClickListener{
-                view: View -> view.findNavController().navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToChatRoomFragment(binding.roomID.text.toString()))
-            database.child("chat-rooms").child(binding.roomID.text.toString()).setValue("")
+                view: View ->
+            val postListener = object : ValueEventListener {
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    if(dataSnapshot.child("chat-rooms").hasChild(binding.roomID.text.toString())){
+                        roomJoinedToast()
+                        view.findNavController().navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToChatRoomFragment(binding.roomID.text.toString()))
+                        database.removeEventListener(this)
+                    }
+                    else{
+                        roomDNEToast()
+                        // Remove the database EventListener
+                        database.removeEventListener(this)
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(ContentValues.TAG, "loadPost:onCancelled", databaseError.toException())
+                }
+            }
+            // Add database Event Listener
+            database.addValueEventListener(postListener)
         }
 
 
 //        return inflater.inflate(R.layout.fragment_create_room, container, false)
         return binding.root
+    }
+
+    // Toasts for easy implementation
+    fun roomTakenToast(){
+        Toast.makeText(this.context,"Room is Taken", Toast. LENGTH_SHORT).show()
+    }
+
+    fun roomCreatedToast(){
+        Toast.makeText(this.context,"Room Created", Toast. LENGTH_SHORT).show()
+    }
+
+    fun roomJoinedToast(){
+        Toast.makeText(this.context,"Room Joined", Toast. LENGTH_SHORT).show()
+    }
+
+    fun roomDNEToast(){
+        Toast.makeText(this.context,"Room Does Not Exist", Toast. LENGTH_SHORT).show()
     }
 
 }
