@@ -5,14 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.ui.NavigationUI
 import com.example.textmyprofessorstudent.databinding.FragmentTitleBinding
-import kotlin.random.Random
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class TitleFragment : Fragment() {
     private val noReplaceList = mutableListOf<Int>()
