@@ -86,6 +86,56 @@ class ChatRoomFragment : Fragment() {
             }
         }
 
+        binding.repeatThat.setOnClickListener{
+            val text = binding.repeatThat.text.toString()
+
+            val date = Date()
+            val msg = Message(time = date.toString(), user = "Student", text = text)
+            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val key: String = autoGenKey.key.toString()
+            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+        }
+
+        binding.moreDetails.setOnClickListener{
+            val text = binding.moreDetails.text.toString()
+
+            val date = Date()
+            val msg = Message(time = date.toString(), user = "Student", text = text)
+            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val key: String = autoGenKey.key.toString()
+            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+        }
+
+        binding.previousSlide.setOnClickListener{
+            val text = binding.previousSlide.text.toString()
+
+            val date = Date()
+            val msg = Message(time = date.toString(), user = "Student", text = text)
+            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val key: String = autoGenKey.key.toString()
+            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+        }
+
+        binding.cantReadTooSmall.setOnClickListener{
+            val text = binding.cantReadTooSmall.text.toString()
+
+            val date = Date()
+            val msg = Message(time = date.toString(), user = "Student", text = text)
+            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val key: String = autoGenKey.key.toString()
+            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+        }
+
+        binding.isThisOnTestExam.setOnClickListener{
+            val text = binding.isThisOnTestExam.text.toString()
+
+            val date = Date()
+            val msg = Message(time = date.toString(), user = "Student", text = text)
+            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val key: String = autoGenKey.key.toString()
+            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+        }
+
         return binding.root
     }
 
