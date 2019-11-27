@@ -1,26 +1,18 @@
 package com.example.textmyprofessorstudent
 
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.textmyprofessorstudent.databinding.FragmentChatRoomBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.fragment_chat_room.view.*
 import java.util.*
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class ChatRoomFragment : Fragment() {
 
@@ -40,9 +32,58 @@ class ChatRoomFragment : Fragment() {
         val args = ChatRoomFragmentArgs.fromBundle(arguments!!)
         val room_id = args.roomid
 
+        binding.chatBox.layoutManager = LinearLayoutManager(this.context)
+        binding.chatBox.adapter = MessageAdapter(database.child("chat-rooms").child(room_id), binding.chatBox)
+
+        // Send Button Listener
         binding.sendBtn.setOnClickListener{
+            //The editText that the student will use as input
             val text = binding.inputMsgText.text.toString()
-            database.child("chat-rooms").child(room_id).child("Professor at " + Date()).setValue(text)
+            //Creates a new entry in the database in "chat-rooms" with name "Professor at *DATE*" and sets the value to the input
+
+            // Do nothing if the the field is blank
+            if(text.isEmpty()) {
+                Toast.makeText(this.context,"Enter a message", Toast. LENGTH_SHORT).show()
+            }
+            else {
+
+                val date = Date()
+                val msg = Message(time = date.toString(), user = "Student", text = text)
+                val autoGenKey = database.child("chat-rooms").child(room_id).push()
+                val key: String = autoGenKey.key.toString()
+                database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+//            Log.d(TAG, "onChildAdded:" + DataSnapshot.getValue(Message::class.javaObjectType)!!)
+
+                //Clear the text after submitting
+                binding.inputMsgText.setText("")
+            }
+        }
+
+        // Text Editor IME Action Listener
+        binding.inputMsgText.setOnEditorActionListener { v, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_SEND ){
+                val text = binding.inputMsgText.text.toString()
+                //Creates a new entry in the database in "chat-rooms" with name "Professor at *DATE*" and sets the value to the input
+
+                // Do nothing if the the field is blank
+                if(text.isEmpty()) {
+                    Toast.makeText(this.context,"Enter a message",Toast. LENGTH_SHORT).show()
+                }
+                else {
+
+                    val date = Date()
+                    val msg = Message(time = date.toString(), user = "Student", text = text)
+                    val autoGenKey = database.child("chat-rooms").child(room_id).push()
+                    val key: String = autoGenKey.key.toString()
+                    database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+                    //Clear the text after submitting
+                    binding.inputMsgText.setText("")
+                }
+                true
+            }
+            else{
+                false
+            }
         }
 
         return binding.root
