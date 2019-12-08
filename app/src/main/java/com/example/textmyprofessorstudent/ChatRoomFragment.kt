@@ -13,10 +13,19 @@ import com.example.textmyprofessorstudent.databinding.FragmentChatRoomBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import android.os.Handler;
+import android.widget.Button
+import android.widget.ImageButton
+import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.delay
+import java.util.concurrent.TimeUnit
 
 class ChatRoomFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
+    val handler = Handler()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +65,11 @@ class ChatRoomFragment : Fragment() {
 
                 //Clear the text after submitting
                 binding.inputMsgText.setText("")
+
+                binding.sendBtn.setEnabled(false)
+                Handler().postDelayed({
+                    binding.sendBtn.setEnabled(true)
+                }, 2000)
             }
         }
 
@@ -88,12 +102,16 @@ class ChatRoomFragment : Fragment() {
 
         binding.repeatThat.setOnClickListener{
             val text = binding.repeatThat.text.toString()
-
             val date = Date()
             val msg = Message(time = date.toString(), user = "Student", text = text)
             val autoGenKey = database.child("chat-rooms").child(room_id).push()
             val key: String = autoGenKey.key.toString()
             database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+
+            binding.repeatThat.setEnabled(false)
+            Handler().postDelayed({
+                binding.repeatThat.setEnabled(true)
+            }, 5000)
         }
 
         binding.moreDetails.setOnClickListener{
@@ -104,6 +122,11 @@ class ChatRoomFragment : Fragment() {
             val autoGenKey = database.child("chat-rooms").child(room_id).push()
             val key: String = autoGenKey.key.toString()
             database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+
+            binding.moreDetails.setEnabled(false)
+            Handler().postDelayed({
+                binding.moreDetails.setEnabled(true)
+            }, 5000)
         }
 
         binding.previousSlide.setOnClickListener{
@@ -114,6 +137,11 @@ class ChatRoomFragment : Fragment() {
             val autoGenKey = database.child("chat-rooms").child(room_id).push()
             val key: String = autoGenKey.key.toString()
             database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+
+            binding.previousSlide.setEnabled(false)
+            Handler().postDelayed({
+                binding.previousSlide.setEnabled(true)
+            }, 5000)
         }
 
         binding.cantReadTooSmall.setOnClickListener{
@@ -124,6 +152,11 @@ class ChatRoomFragment : Fragment() {
             val autoGenKey = database.child("chat-rooms").child(room_id).push()
             val key: String = autoGenKey.key.toString()
             database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+
+            binding.cantReadTooSmall.setEnabled(false)
+            Handler().postDelayed({
+                binding.cantReadTooSmall.setEnabled(true)
+            }, 5000)
         }
 
         binding.isThisOnTestExam.setOnClickListener{
@@ -134,6 +167,11 @@ class ChatRoomFragment : Fragment() {
             val autoGenKey = database.child("chat-rooms").child(room_id).push()
             val key: String = autoGenKey.key.toString()
             database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+
+            binding.isThisOnTestExam.setEnabled(false)
+            Handler().postDelayed({
+                binding.isThisOnTestExam.setEnabled(true)
+            }, 5000)
         }
 
         return binding.root
