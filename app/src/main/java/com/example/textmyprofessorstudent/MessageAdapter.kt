@@ -1,6 +1,7 @@
 package com.example.textmyprofessorstudent
 
 import android.content.ContentValues.TAG
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,8 @@ import kotlinx.android.synthetic.main.list_item.view.*
 class MessageAdapter(private val database: DatabaseReference, private val recyclerView: RecyclerView): RecyclerView.Adapter<CustomViewHolder>() {
 
     var messagesList: MutableList<Message?> = mutableListOf()
+    val professorTextColor: String = "#C04161"
+    val studentTextColor: String = "#122960"
 
     init {
         // Create child event listener
@@ -64,6 +67,17 @@ class MessageAdapter(private val database: DatabaseReference, private val recycl
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val msg = messagesList.get(position)
+
+        if (msg?.user == "Professor") {
+            holder.view.user_item.setTextColor(Color.parseColor(professorTextColor))
+            holder.view.text_item.setTextColor(Color.parseColor(professorTextColor))
+            holder.view.timestamp_item.setTextColor(Color.parseColor(professorTextColor))
+        } else {
+            holder.view.user_item.setTextColor(Color.parseColor(studentTextColor))
+            holder.view.text_item.setTextColor(Color.parseColor(studentTextColor))
+            holder.view.timestamp_item.setTextColor(Color.parseColor(studentTextColor))
+        }
+
         holder.view.text_item.text = msg?.text
         holder.view.user_item.text = msg?.user
         holder.view.timestamp_item.text = msg?.time
