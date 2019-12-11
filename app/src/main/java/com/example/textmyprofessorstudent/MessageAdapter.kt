@@ -71,11 +71,11 @@ class MessageAdapter(private val database: DatabaseReference, private val recycl
         if (msg?.user == "Professor") {
             holder.view.user_item.setTextColor(Color.parseColor(professorTextColor))
             holder.view.text_item.setTextColor(Color.parseColor(professorTextColor))
-            holder.view.timestamp_item.setTextColor(Color.parseColor(professorTextColor))
+            holder.view.text_item.setBackgroundResource(R.drawable.rounded_rectangle)
         } else {
             holder.view.user_item.setTextColor(Color.parseColor(studentTextColor))
             holder.view.text_item.setTextColor(Color.parseColor(studentTextColor))
-            holder.view.timestamp_item.setTextColor(Color.parseColor(studentTextColor))
+            holder.view.text_item.setBackgroundResource(R.drawable.rounded_rectangle_student)
         }
 
         holder.view.text_item.text = msg?.text

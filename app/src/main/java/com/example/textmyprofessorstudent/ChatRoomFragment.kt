@@ -15,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import android.os.Handler;
+import android.os.Handler
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.navigation.fragment.findNavController
@@ -42,7 +42,7 @@ class ChatRoomFragment : Fragment() {
         val room_id = args.roomid
 
         binding.chatBox.layoutManager = LinearLayoutManager(this.context)
-        binding.chatBox.adapter = MessageAdapter(database.child("chat-rooms").child(room_id), binding.chatBox)
+        binding.chatBox.adapter = MessageAdapter(database.child("chat-rooms").child(room_id).child("messages"), binding.chatBox)
 
         // Send Button Listener
         binding.sendBtn.setOnClickListener{
@@ -58,9 +58,9 @@ class ChatRoomFragment : Fragment() {
 
                 val date = Date()
                 val msg = Message(time = date.toString(), user = "Student", text = text)
-                val autoGenKey = database.child("chat-rooms").child(room_id).push()
+                val autoGenKey = database.child("chat-rooms").child(room_id).child("messages").push()
                 val key: String = autoGenKey.key.toString()
-                database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+                database.child("chat-rooms").child(room_id).child("messages").child(key).setValue(msg)
 //            Log.d(TAG, "onChildAdded:" + DataSnapshot.getValue(Message::class.javaObjectType)!!)
 
                 //Clear the text after submitting
@@ -87,9 +87,9 @@ class ChatRoomFragment : Fragment() {
 
                     val date = Date()
                     val msg = Message(time = date.toString(), user = "Student", text = text)
-                    val autoGenKey = database.child("chat-rooms").child(room_id).push()
+                    val autoGenKey = database.child("chat-rooms").child(room_id).child("messages").push()
                     val key: String = autoGenKey.key.toString()
-                    database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+                    database.child("chat-rooms").child(room_id).child("messages").child(key).setValue(msg)
                     //Clear the text after submitting
                     binding.inputMsgText.setText("")
                 }
@@ -104,9 +104,9 @@ class ChatRoomFragment : Fragment() {
             val text = binding.repeatThat.text.toString()
             val date = Date()
             val msg = Message(time = date.toString(), user = "Student", text = text)
-            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val autoGenKey = database.child("chat-rooms").child(room_id).child("messages").push()
             val key: String = autoGenKey.key.toString()
-            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+            database.child("chat-rooms").child(room_id).child("messages").child(key).setValue(msg)
 
             binding.repeatThat.setEnabled(false)
             Handler().postDelayed({
@@ -119,9 +119,9 @@ class ChatRoomFragment : Fragment() {
 
             val date = Date()
             val msg = Message(time = date.toString(), user = "Student", text = text)
-            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val autoGenKey = database.child("chat-rooms").child(room_id).child("messages").push()
             val key: String = autoGenKey.key.toString()
-            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+            database.child("chat-rooms").child(room_id).child("messages").child(key).setValue(msg)
 
             binding.moreDetails.setEnabled(false)
             Handler().postDelayed({
@@ -134,9 +134,9 @@ class ChatRoomFragment : Fragment() {
 
             val date = Date()
             val msg = Message(time = date.toString(), user = "Student", text = text)
-            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val autoGenKey = database.child("chat-rooms").child(room_id).child("messages").push()
             val key: String = autoGenKey.key.toString()
-            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+            database.child("chat-rooms").child(room_id).child("messages").child(key).setValue(msg)
 
             binding.previousSlide.setEnabled(false)
             Handler().postDelayed({
@@ -149,9 +149,9 @@ class ChatRoomFragment : Fragment() {
 
             val date = Date()
             val msg = Message(time = date.toString(), user = "Student", text = text)
-            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val autoGenKey = database.child("chat-rooms").child(room_id).child("messages").push()
             val key: String = autoGenKey.key.toString()
-            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+            database.child("chat-rooms").child(room_id).child("messages").child(key).setValue(msg)
 
             binding.cantReadTooSmall.setEnabled(false)
             Handler().postDelayed({
@@ -164,9 +164,9 @@ class ChatRoomFragment : Fragment() {
 
             val date = Date()
             val msg = Message(time = date.toString(), user = "Student", text = text)
-            val autoGenKey = database.child("chat-rooms").child(room_id).push()
+            val autoGenKey = database.child("chat-rooms").child(room_id).child("messages").push()
             val key: String = autoGenKey.key.toString()
-            database.child("chat-rooms").child(room_id).child(key).setValue(msg)
+            database.child("chat-rooms").child(room_id).child("messages").child(key).setValue(msg)
 
             binding.isThisOnTestExam.setEnabled(false)
             Handler().postDelayed({

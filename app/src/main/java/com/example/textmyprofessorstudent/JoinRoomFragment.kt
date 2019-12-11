@@ -1,5 +1,6 @@
 package com.example.textmyprofessorstudent
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -37,16 +40,64 @@ class JoinRoomFragment : Fragment() {
             val postListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    // Get Post object and use the values to update the UI
-                    if(dataSnapshot.child("chat-rooms").hasChild(binding.roomID.text.toString())){
-                        roomJoinedToast()
-                        view.findNavController().navigate(JoinRoomFragmentDirections.actionJoinRoomFragmentToChatRoomFragment(binding.roomID.text.toString()))
-                        database.removeEventListener(this)
+
+                    val inputText = binding.roomID.text.toString()
+
+                    if (inputText == "") {
+                        emptyTextToast()
                     }
-                    else{
-                        roomDNEToast()
-                        // Remove the database EventListener
-                        database.removeEventListener(this)
+
+                    else {
+
+                        // Get Post object and use the values to update the UI
+                        if (dataSnapshot.child("chat-rooms").hasChild(binding.roomID.text.toString())) {
+                            val hasPassword =
+                                dataSnapshot.child("chat-rooms").child(inputText).child("password").value != ""
+
+                            if (hasPassword) {
+                                val joinPass = dataSnapshot.child("chat-rooms").child(inputText).child("password").value
+                                val passBuilder = AlertDialog.Builder(context)
+                                passBuilder.setMessage("This room is password secured. Please enter the password.")
+
+                                val input = EditText(context)
+                                val lp: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT)
+                                input.setLayoutParams(lp)
+                                passBuilder.setView(input)
+
+                                passBuilder.setPositiveButton("Join") { _, _ ->
+                                    val input_pw = input.text.toString()
+                                    if (input_pw == joinPass) {
+                                        view.findNavController().navigate(
+                                            JoinRoomFragmentDirections.actionJoinRoomFragmentToChatRoomFragment(
+                                                binding.roomID.text.toString()
+                                            )
+                                        )
+                                        roomJoinedToast()
+                                    } else {
+                                        passwordInvalidToast()
+                                    }
+                                }
+
+                                passBuilder.setNeutralButton("Cancel") { _, _ ->
+                                }
+
+                                val passDialog: AlertDialog = passBuilder.create()
+                                passDialog.show()
+                            } else {
+                                view.findNavController().navigate(
+                                    JoinRoomFragmentDirections.actionJoinRoomFragmentToChatRoomFragment(
+                                        binding.roomID.text.toString()
+                                    )
+                                )
+                            }
+                            database.removeEventListener(this)
+                        } else {
+                            roomDNEToast()
+                            // Remove the database EventListener
+                            database.removeEventListener(this)
+                        }
                     }
                 }
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -76,8 +127,16 @@ class JoinRoomFragment : Fragment() {
         Toast.makeText(this.context,"Room Joined", Toast. LENGTH_SHORT).show()
     }
 
+    fun emptyTextToast(){
+        Toast.makeText(this.context,"Please Enter a Room Name", Toast. LENGTH_SHORT).show()
+    }
+
     fun roomDNEToast(){
         Toast.makeText(this.context,"Room Does Not Exist", Toast. LENGTH_SHORT).show()
+    }
+
+    fun passwordInvalidToast() {
+        Toast.makeText(this.context,"Password is Invalid. Please Try Again.", Toast. LENGTH_SHORT).show()
     }
 
 }
