@@ -13,19 +13,13 @@ import com.example.textmyprofessorstudent.databinding.FragmentChatRoomBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import android.os.Handler
-import android.widget.Button
-import android.widget.ImageButton
-import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.delay
-import java.util.concurrent.TimeUnit
 
 class ChatRoomFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
-    val handler = Handler()
+    private var profanity = setOf("fuck", "shit", "bitch", "cunt", "asshole", "bastard", "dick",
+        "pussy", "ass", "fucker", "fuck off", "fuck you", "motherfucker", "whore")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +41,22 @@ class ChatRoomFragment : Fragment() {
         // Send Button Listener
         binding.sendBtn.setOnClickListener{
             //The editText that the student will use as input
-            val text = binding.inputMsgText.text.toString()
+            val inText = binding.inputMsgText.text.toString()
             //Creates a new entry in the database in "chat-rooms" with name "Professor at *DATE*" and sets the value to the input
+
+            //Profanity filter
+            val textList = inText.split(" ")
+            var newText = ""
+
+            for(word in textList) {
+                if( profanity.contains(word) ) {
+                    newText += "**** "
+                }
+                else{
+                    newText += word + " "
+                }
+            }
+            val text = newText
 
             // Do nothing if the the field is blank
             if(text.isEmpty()) {
